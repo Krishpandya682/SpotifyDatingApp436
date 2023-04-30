@@ -24,22 +24,51 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-    func getUsers(uid:String){
+    func getUser(uid: String, completion: @escaping (User?, Error?) -> Void) {
         let docRef = db.collection("Users").document(uid)
+
         docRef.getDocument { (document, error) in
-               guard error == nil else {
-                   print("error", error ?? "")
-                   return
-               }
+            do {
+                if let error = error {
+                    throw error
+                }
 
-               if let document = document, document.exists {
-                   let data = document.data()
-                   if let data = data {
-                       print("data", data)
-                   }
-               }
+                guard let document = document, document.exists else {
+                    throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+                }
 
-           }
+                let data = document.data()!
+
+                let user = try User(from: data as! Decoder)
+
+                completion(user, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+    
+    func getUsers(completion: @escaping ([User]?, Error?) -> Void) {
+        db.collection("Users").getDocuments { (snapshot, error) in
+            do {
+                if let error = error {
+                    throw error
+                }
+
+                var users = [User]()
+
+                for document in snapshot!.documents {
+                    let data = document.data()
+
+                    let user = try User(from: data as! Decoder )
+                    users.append(user)
+                }
+
+                completion(users, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
     }
 }
 

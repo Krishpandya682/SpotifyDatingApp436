@@ -58,13 +58,41 @@ struct User: Identifiable, Codable {
 }
 
 func setUsers(_ val: User) {
-    
     FirestoreManager().createUser(userCard: val)
 }
 
-func getUsers(_ uid:String){
-    print("HIIIII")
-    FirestoreManager().getUsers(uid: uid)
+func getUser(_ uid:String, completion: @escaping (User?, Error?) -> Void) {
+    print("getUsers called")
+    FirestoreManager().getUser(uid: uid) { (user, error) in
+            if let error = error {
+                // Handle the error
+                completion(nil, error)
+                return
+            }
+            
+            if let user = user {
+                // Use the retrieved user object
+                completion(user, nil)
+            }
+        }
+}
+
+func getUsers(completion: @escaping ([User]?, Error?) -> Void) {
+    FirestoreManager().getUsers { (users, error) in
+        if let error = error {
+            print("Error: \(error.localizedDescription)")
+            completion(nil, error)
+            return
+        }
+
+        guard let users = users else {
+            print("No users found")
+            completion(nil, nil)
+            return
+        }
+
+        completion(users, nil)
+    }
 }
 
 func calculateFeatures(spotifyUserId: String) -> Features {

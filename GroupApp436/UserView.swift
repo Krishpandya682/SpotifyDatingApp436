@@ -22,12 +22,23 @@ struct UserView: View {
         Button(action: {setUsers(tempUser)}){
             Text("Write")
         }
-        Button(action: {getUsers("626E5AC0-122B-45D4-91D0-6C44396AE5E8")}){
+        Button(action: {
+            getUser("626E5AC0-122B-45D4-91D0-6C44396AE5E8") { (user, error) in
+                if let error = error {
+                    print("Error retrieving user: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let user = user {
+                    // Use the retrieved user object
+                    print(user.name)
+                }
+            }
+            
+        }){
             Text("Read")
         }
-
-            }
-     
+    }
 }
 
 
