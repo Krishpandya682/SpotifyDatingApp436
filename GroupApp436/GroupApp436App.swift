@@ -14,6 +14,7 @@ struct GroupApp436App: App {
     @State private var currUser : User? = nil
     
     @StateObject var authManager = SpotifyAuthManager()
+    @State var userAlreadyExists = false
     
     init(){
         FirebaseApp.configure()
@@ -27,7 +28,7 @@ struct GroupApp436App: App {
                                     print("Redirected to app with URL: \(url)")
                                     self.isRedirected = true
                     createUserProfile(url: url){
-                        user in setUsers(user)
+                        user in userAlreadyExists = setUsers(user)
                     }
                     
                                }

@@ -63,13 +63,13 @@ struct User: Identifiable, Codable {
 
 
 
-func setUsers(_ val: User) {
-    FirestoreManager().createUser(userCard: val)
+func setUsers(_ val: User) -> Bool {
+    return FirestoreManager().createUser(userCard: val)
 }
 
-func getUser(_ uid:String, completion: @escaping (User?, Error?) -> Void) {
+func getUser(_ spotifyId:String, completion: @escaping (User?, Error?) -> Void) {
     print("getUsers called")
-    FirestoreManager().getUser(uid: uid) { (user, error) in
+    FirestoreManager().getUser(spotifyId: spotifyId) { (user, error) in
             if let error = error {
                 // Handle the error
                 completion(nil, error)

@@ -13,19 +13,26 @@ import FirebaseFirestoreSwift
 class FirestoreManager: ObservableObject {
     let db = Firestore.firestore()
 
-    func createUser(userCard: User) {
+    func createUser(userCard: User) -> Bool {
      
-        let docRef = db.collection("Users").document(userCard.id.uuidString)
-
-        do {
-            try docRef.setData(from: userCard)
-        } catch let error {
-            print("Error writing city to Firestore: \(error)")
+        let docRef = db.collection("Users").document(userCard.spotifyId)
+        
+        if ((docRef != nil)) {
+            return false;
+        }else{
+            do {
+                try docRef.setData(from: userCard)
+            } catch let error {
+                print("Error writing city to Firestore: \(error)")
+            }
+            
+            return true
+            
         }
     }
     
-    func getUser(uid: String, completion: @escaping (User?, Error?) -> Void) {
-        let docRef = db.collection("Users").document(uid)
+    func getUser(spotifyId: String, completion: @escaping (User?, Error?) -> Void) {
+        let docRef = db.collection("Users").document(spotifyId)
 
         docRef.getDocument { (document, error) in
             do {
