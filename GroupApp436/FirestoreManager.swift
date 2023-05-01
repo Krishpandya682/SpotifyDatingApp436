@@ -70,6 +70,14 @@ class FirestoreManager: ObservableObject {
             }
         }
     }
+    
+    func updateUser(uid: String, data: [String: Any], completion: ((Error?) -> Void)?) {
+        let docRef = db.collection("Users").document(uid)
+        
+        docRef.updateData(data) { error in
+            completion?(error)
+        }
+    }
 }
 
 
