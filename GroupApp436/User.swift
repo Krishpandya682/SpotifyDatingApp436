@@ -41,6 +41,7 @@ struct User: Identifiable, Codable {
     let matchVal: Double
     let liked: [String]
     let matches: [String]
+    let disliked: [String]
     
     init(spotifyId: String, name: String, imageName: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, city: String, state: String) {
         self.spotifyId = spotifyId
@@ -58,6 +59,7 @@ struct User: Identifiable, Codable {
         self.matchVal = calculateMatchVal(features: self.features)
         self.liked = []
         self.matches = []
+        self.disliked = []
     }
 }
 
@@ -105,7 +107,7 @@ func calculateFeatures(spotifyUserId: String) -> Features {
     return Features(acousticness: 0, danceability: 0, duration_ms: 0, energy: 0, instrumentalness: 0, key: 0, liveness: 0, loudness: 0, mode: 0, speechiness: 0, tempo: 0, time_signature: 0)
 }
 
-func addLiked(spotifyUserId: String, likedUserId: String) {
+func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
     var usr2: User? = nil
     var usr1: User? = nil// TODO: current user needs to be a class, needs to be an instance with the val self.id or smth like that. improve the structure!!
     
@@ -121,7 +123,7 @@ func addLiked(spotifyUserId: String, likedUserId: String) {
         }
     }
     
-    getUser(likedUserId) { (user, error) in
+    getUser(likedSpotifyUserId) { (user, error) in
         if let error = error {
             // Handle the error
             print("errror retreiving user2")
@@ -133,8 +135,9 @@ func addLiked(spotifyUserId: String, likedUserId: String) {
         }
     }
     if let user1 = usr1 {
-    var newLiked = user1.liked
-                newLiked.append(likedUserId)
+        var newLiked = user1.liked
+        
+        newLiked.append(likedSpotifyUserId)
                 
         FirestoreManager().updateUser(uid: spotifyUserId, data: ["liked": newLiked]) { (error3) in
             if let error = error3 {
@@ -147,7 +150,7 @@ func addLiked(spotifyUserId: String, likedUserId: String) {
                 if user2.liked.contains(spotifyUserId) {
                     // They have liked each other
                     var newMatches1 = user1.matches
-                    newMatches1.append(likedUserId)
+                    newMatches1.append(likedSpotifyUserId)
                     
                     var newMatches2 = user2.matches
                     newMatches2.append(spotifyUserId)
@@ -160,7 +163,7 @@ func addLiked(spotifyUserId: String, likedUserId: String) {
                         }
                     }
                     
-                    FirestoreManager().updateUser(uid: likedUserId, data: ["matches": newMatches2]) { (error5) in
+                    FirestoreManager().updateUser(uid: likedSpotifyUserId, data: ["matches": newMatches2]) { (error5) in
                         if let error = error5 {
                             // Handle the error
                             print("Error updating user2 matches: \(error.localizedDescription)")
@@ -172,4 +175,8 @@ func addLiked(spotifyUserId: String, likedUserId: String) {
         }
     }
     
+    
+    func addDisliked(spotifyUserId: String, dislikedSpotifyUserId: String) {
+        return
+    }
 }

@@ -7,10 +7,11 @@
 
 import Foundation
 
-//Return an array of 5/10 closest users userId
-func getClosestUsers(spotifyUserId:String, count: Int = 5) -> [UUID] {
-    var closestUserIds: [UUID] = []
+//Return an array of count closest users userId
+func getClosestUsers(spotifyUserId:String, count: Int = 5) -> [String] {
+    var closestUserIds: [String] = []
     var matchVal: Double = 0
+    var disliked: [String] = []
     
     getUser(spotifyUserId) { (user, error) in
         if let error = error {
@@ -21,6 +22,7 @@ func getClosestUsers(spotifyUserId:String, count: Int = 5) -> [UUID] {
         if let user = user {
             // Use the retrieved user object
             matchVal = user.matchVal
+            disliked = user.disliked
         }
     }
     
@@ -41,7 +43,15 @@ func getClosestUsers(spotifyUserId:String, count: Int = 5) -> [UUID] {
             }
             
             // Get the closest 'count' number of users
-            closestUserIds = sortedUsers.prefix(count).map {$0.id}
+            for user in sortedUsers {
+                    if !disliked.contains(user.spotifyId) {
+                        closestUserIds.append(user.spotifyId)
+                        
+                        if closestUserIds.count == count {
+                            break
+                        }
+                    }
+                }
             
         }
     }
