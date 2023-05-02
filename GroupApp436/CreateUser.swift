@@ -61,7 +61,7 @@ func getUserInfo(with accessToken: String, completion: @escaping (Result<[String
             return
         }
         print("Raw data: \(String(data: data, encoding: .utf8) ?? "Failed to decode data")")
-
+        
         
         do {
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {

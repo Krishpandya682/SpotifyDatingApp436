@@ -11,12 +11,10 @@ import SwiftUI
 struct ContentView: View {
     
     
-    @EnvironmentObject var spotifyAuthManager: SpotifyAuthManager
     
     var body: some View {
         VStack {
             LoginView()
-
         }
         .padding()
     }
