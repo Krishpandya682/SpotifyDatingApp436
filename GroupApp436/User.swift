@@ -41,7 +41,7 @@ struct User: Identifiable, Codable {
     let matchVal: Double
     let liked: [String]
     let matches: [String]
-    let disliked: [String]
+    var disliked: [String]
     
     init(spotifyId: String, name: String, imageName: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, city: String, state: String) {
         self.spotifyId = spotifyId
@@ -108,75 +108,87 @@ func calculateFeatures(spotifyUserId: String) -> Features {
 }
 
 func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
-    var usr2: User? = nil
-    var usr1: User? = nil// TODO: current user needs to be a class, needs to be an instance with the val self.id or smth like that. improve the structure!!
     
-    getUser(spotifyUserId) { (user, error) in
+    getUser(spotifyUserId) { (u1, error) in
         if let error = error {
             // Handle the error
             print("errror retreiving user2")
         }
         
-        if let user = user {
-            // Use the retrieved user object
-            usr1 = user
-        }
-    }
-    
-    getUser(likedSpotifyUserId) { (user, error) in
-        if let error = error {
-            // Handle the error
-            print("errror retreiving user2")
-        }
-        
-        if let user = user {
-            // Use the retrieved user object
-            usr2 = user
-        }
-    }
-    if let user1 = usr1 {
-        var newLiked = user1.liked
-        
-        newLiked.append(likedSpotifyUserId)
-                
-        FirestoreManager().updateUser(uid: spotifyUserId, data: ["liked": newLiked]) { (error3) in
-            if let error = error3 {
-                // Handle the error
-                print("Error updating user1: \(error.localizedDescription)")
-                return
-            }
+        if let user1 = u1 {
             
-            if let user2 = usr2 {
-                if user2.liked.contains(spotifyUserId) {
-                    // They have liked each other
-                    var newMatches1 = user1.matches
-                    newMatches1.append(likedSpotifyUserId)
+            getUser(likedSpotifyUserId) { (u2, error) in
+                if let error = error {
+                    // Handle the error
+                    print("errror retreiving user2")
+                }
+                
+                if let user2 = u2 {
+                    var newLiked = user1.liked
                     
-                    var newMatches2 = user2.matches
-                    newMatches2.append(spotifyUserId)
-                    
-                    FirestoreManager().updateUser(uid: spotifyUserId, data: ["matches": newMatches1]) { (error4) in
-                        if let error = error4 {
+                    newLiked.append(likedSpotifyUserId)
+                            
+                    FirestoreManager().updateUser(uid: spotifyUserId, data: ["liked": newLiked]) { (error3) in
+                        if let error = error3 {
                             // Handle the error
-                            print("Error updating user1 matches: \(error.localizedDescription)")
+                            print("Error updating user1: \(error.localizedDescription)")
                             return
                         }
-                    }
-                    
-                    FirestoreManager().updateUser(uid: likedSpotifyUserId, data: ["matches": newMatches2]) { (error5) in
-                        if let error = error5 {
-                            // Handle the error
-                            print("Error updating user2 matches: \(error.localizedDescription)")
-                            return
+                        
+                            if user2.liked.contains(spotifyUserId) {
+                                // They have liked each other
+                                var newMatches1 = user1.matches
+                                newMatches1.append(likedSpotifyUserId)
+                                
+                                var newMatches2 = user2.matches
+                                newMatches2.append(spotifyUserId)
+                                
+                                FirestoreManager().updateUser(uid: spotifyUserId, data: ["matches": newMatches1]) { (error4) in
+                                    if let error = error4 {
+                                        // Handle the error
+                                        print("Error updating user1 matches: \(error.localizedDescription)")
+                                        return
+                                    }
+                                }
+                                
+                                FirestoreManager().updateUser(uid: likedSpotifyUserId, data: ["matches": newMatches2]) { (error5) in
+                                    if let error = error5 {
+                                        // Handle the error
+                                        print("Error updating user2 matches: \(error.localizedDescription)")
+                                        return
+                                    }
+                                }
+                            }
                         }
-                    }
                 }
             }
         }
     }
-    
-    
-    func addDisliked(spotifyUserId: String, dislikedSpotifyUserId: String) {
-        return
+}
+
+func addDisliked(spotifyUserId: String, dislikedSpotifyUserId: String) {
+    getUser(spotifyUserId) { (u1, error) in
+        if let error = error {
+            // Handle the error
+            print("error retrieving user1")
+        }
+
+        if var user1 = u1 {
+            // Use the retrieved user object
+
+            // Add disliked user to current user's dislike list
+            user1.disliked.append(dislikedSpotifyUserId)
+
+            // Update current user object in Firestore database
+            let data: [String: Any] = ["disliked": user1.disliked]
+            FirestoreManager().updateUser(spotifyId: spotifyUserId, data: data) { (error) in
+                if let error = error {
+                    print("Error updating current user: \(error.localizedDescription)")
+                    return;
+                } else {
+                    print("Disliked user added successfully")
+                }
+            }
+        }
     }
 }

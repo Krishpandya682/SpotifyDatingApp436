@@ -52,8 +52,8 @@ func getClosestUsers(spotifyUserId:String, count: Int = 5) -> [String] {
                         }
                     }
                 }
-            
         }
     }
+    
     return closestUserIds
 }
