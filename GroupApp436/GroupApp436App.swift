@@ -11,10 +11,10 @@ import Firebase
 @main
 struct GroupApp436App: App {
     @State private var isRedirected = false
-    @State private var currUser : User? = nil
+    @State private var currUser: User? = nil
     @State var userAlreadyExists = false
     
-    init(){
+    init() {
         FirebaseApp.configure()
     }
     
@@ -22,47 +22,35 @@ struct GroupApp436App: App {
         WindowGroup {
             ContentView()
                 .onOpenURL { url in
-                                   // Handle the redirect URL here
-                                    print("Redirected to app with URL: \(url)")
-                                    self.isRedirected = true
-//                                    handleAuthorizationRedirect(url: url)
-
-
-                    createUserProfile(url: url){
-                        user in userAlreadyExists = setUsers(user)
+                    // Handle the redirect URL here
+                    print("Redirected to app with URL: \(url)")
+                    self.isRedirected = true
+                    createUserProfile(url: url) { user in
+                        setUsers(user) { success in
+                            userAlreadyExists = success
+                            currUser = user
+                        }
                     }
-
-                               }
+                }
                 .sheet(isPresented: $isRedirected) {
-                                   // Show a sheet or perform any other action upon redirect
-                                    UserView()
-                               }
+                    if let user = currUser {
+                            if userAlreadyExists {
+                                UserView(spotifyId: user.spotifyId).onAppear(){
+                                    print($userAlreadyExists)
+                                    print("Going to User View")
+                                }
+                            } else {
+                                SignUpView(spotifyId: user.spotifyId).onAppear(){
+                                    print($userAlreadyExists)
+                                    print("Going to Signup View")
+                                }
+                            }
+                        
+                    } else {
+                        Text("Error: User not found")
+                            .foregroundColor(.red)
+                    }
+                }
         }
     }
 }
-//
-//func handleAuthorizationRedirect(url: URL) {
-//    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-//          let queryItems = components.queryItems,
-//          let authorizationCode = queryItems.first(where: { $0.name == "code" })?.value else {
-//        print("Failed to extract authorization code from URL")
-//        return
-//    }
-//
-//    getToken(withCode: authorizationCode) { (accessToken, error) in
-//        if let accessToken = accessToken {
-//            print("Access token: \(accessToken)")
-//            
-//            // Call getCurrentUserProfile function to get the current user's profile
-//            getCurrentUserProfile(withAccessToken: accessToken) { (profile, error) in
-//                if let profile = profile {
-//                    print("User profile: \(profile)")
-//                } else if let error = error {
-//                    print("Error getting user profile: \(error.localizedDescription)")
-//                }
-//            }
-//        } else if let error = error {
-//            print("Error getting access token: \(error.localizedDescription)")
-//        }
-//    }
-//}

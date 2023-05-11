@@ -64,10 +64,12 @@ struct User: Identifiable, Codable {
 }
 
 
-
-func setUsers(_ val: User) -> Bool {
-    return FirestoreManager().createUser(userCard: val)
+func setUsers(_ val: User, completion: @escaping (Bool) -> Void) {
+    FirestoreManager().createUser(userCard: val) { success in
+        completion(success)
+    }
 }
+
 
 func getUser(_ spotifyId:String, completion: @escaping (User?, Error?) -> Void) {
     print("getUsers called")
@@ -128,7 +130,7 @@ func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
                     
                     newLiked.append(likedSpotifyUserId)
                             
-                    FirestoreManager().updateUser(uid: spotifyUserId, data: ["liked": newLiked]) { (error3) in
+                    FirestoreManager().updateUser(spotifyId: spotifyUserId, data: ["liked": newLiked]) { (error3) in
                         if let error = error3 {
                             // Handle the error
                             print("Error updating user1: \(error.localizedDescription)")
@@ -143,7 +145,7 @@ func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
                                 var newMatches2 = user2.matches
                                 newMatches2.append(spotifyUserId)
                                 
-                                FirestoreManager().updateUser(uid: spotifyUserId, data: ["matches": newMatches1]) { (error4) in
+                                FirestoreManager().updateUser(spotifyId: spotifyUserId, data: ["matches": newMatches1]) { (error4) in
                                     if let error = error4 {
                                         // Handle the error
                                         print("Error updating user1 matches: \(error.localizedDescription)")
@@ -151,7 +153,7 @@ func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
                                     }
                                 }
                                 
-                                FirestoreManager().updateUser(uid: likedSpotifyUserId, data: ["matches": newMatches2]) { (error5) in
+                                FirestoreManager().updateUser(spotifyId: likedSpotifyUserId, data: ["matches": newMatches2]) { (error5) in
                                     if let error = error5 {
                                         // Handle the error
                                         print("Error updating user2 matches: \(error.localizedDescription)")

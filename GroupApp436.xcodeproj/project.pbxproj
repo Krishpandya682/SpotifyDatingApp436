@@ -27,6 +27,7 @@
 		074A930329F88729009F5520 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 074A930229F88729009F5520 /* FirebaseFirestoreSwift */; };
 		074A930529F88729009F5520 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 074A930429F88729009F5520 /* FirebaseStorage */; };
 		074A930829F888BB009F5520 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074A930729F888BB009F5520 /* GoogleService-Info.plist */; };
+		07924D4D2A0D030000FAE277 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07924D4C2A0D030000FAE277 /* SignUpView.swift */; };
 		98DA491429FDC70100295CD5 /* RecommendationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DA491329FDC70100295CD5 /* RecommendationSystem.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		074A92F629F886CE009F5520 /* SpotifyiOS.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = SpotifyiOS.xcframework; sourceTree = "<group>"; };
 		074A930629F8882C009F5520 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		074A930729F888BB009F5520 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		07924D4C2A0D030000FAE277 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		98DA491329FDC70100295CD5 /* RecommendationSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationSystem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +110,7 @@
 				074A92F129F88685009F5520 /* UserView.swift */,
 				074A92F329F88694009F5520 /* CreateUser.swift */,
 				98DA491329FDC70100295CD5 /* RecommendationSystem.swift */,
+				07924D4C2A0D030000FAE277 /* SignUpView.swift */,
 			);
 			path = GroupApp436;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				074A92D629F88556009F5520 /* ContentView.swift in Sources */,
 				074A92D429F88556009F5520 /* GroupApp436App.swift in Sources */,
 				98DA491429FDC70100295CD5 /* RecommendationSystem.swift in Sources */,
+				07924D4D2A0D030000FAE277 /* SignUpView.swift in Sources */,
 				074A92E329F885B3009F5520 /* SpotifyConstants.swift in Sources */,
 				074A92F029F8866E009F5520 /* LoginView.swift in Sources */,
 				074A92F229F88685009F5520 /* UserView.swift in Sources */,
