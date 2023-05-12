@@ -30,7 +30,6 @@ struct UserView: View {
             }
         }
         .onAppear {
-            
             getUser(spotifyId) { (user, error) in
                 if let error = error {
                     print("Error retrieving user: \(error.localizedDescription)")

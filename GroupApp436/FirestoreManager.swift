@@ -26,10 +26,10 @@ class FirestoreManager: ObservableObject {
             } else {
                 // Document with the Spotify ID does not exist
                 print("User does not exist, creating a new one")
-                
+                                
                 // Perform your write operation or any other required actions to create the document
                 do {
-                    try docRef.setData(from: userCard) { error in
+                    try docRef.setData(userCard.toDictionary()) { error in
                         if let error = error {
                             print("Error writing userCard to Firestore: \(error)")
                             completion(false)

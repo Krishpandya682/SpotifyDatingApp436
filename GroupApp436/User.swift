@@ -61,6 +61,27 @@ struct User: Identifiable, Codable {
         self.matches = []
         self.disliked = []
     }
+    
+    func toDictionary() -> [String: Any] {
+        return[
+            "spotifyId": self.spotifyId,
+            "name": self.name,
+            "imageName": self.imageName,
+            "age": self.age,
+            "description": self.description,
+            "gender": self.gender,
+            "genderPref": self.genderPref,
+            "ageLow": self.ageLow,
+            "ageHigh": self.ageHigh,
+            "city": self.city,
+            "state": self.state,
+            "features": self.features,
+            "matchVal": self.matchVal,
+            "liked": self.liked,
+            "matches": self.matches,
+            "disliked": self.disliked
+        ]
+    }
 }
 
 
