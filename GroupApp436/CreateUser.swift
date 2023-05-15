@@ -86,7 +86,7 @@ func createUserProfile(url : URL, completion: @escaping (User) -> Void){
     
     var userSpotifyId = "TEMPID"
     var userDisplayName = "TEMPDISPLAYNAME"
-    var userImageLink = "No Image found"
+    var userImageLink = "Noimagefound"
     
     if let accessToken = params?["access_token"] {
         getUserInfo(with: accessToken) { result in
@@ -110,18 +110,32 @@ func createUserProfile(url : URL, completion: @escaping (User) -> Void){
                     print("Profile Image not found")
                 }
                 
-                let tempUser = User(spotifyId: userSpotifyId,
-                                                    name: userDisplayName,
-                                                    imageName: userImageLink,
-                                                    age: 20,
-                                                    description: "Testing after getting from spotify",
-                                                    gender: 0,
-                                                    genderPref: 1,
-                                                    ageLow: 18,
-                                                    ageHigh: 25,
-                                                    city: "College Park",
-                                                    state: "MD")
-                                completion(tempUser)
+                print(userSpotifyId)
+                
+                getUser(userSpotifyId) { (u1, error) in
+                    if let error = error {
+                        // create new user
+                        print(error.localizedDescription)
+                        let tempUser = User(spotifyId: userSpotifyId,
+                                            name: userDisplayName,
+                                            imageURL: userImageLink,
+                                            age: 20,
+                                            description: "Testing after getting from spotify",
+                                            gender: 0,
+                                            genderPref: 1,
+                                            ageLow: 18,
+                                            ageHigh: 25,
+                                            city: "College Park",
+                                            state: "MD", phoneNumber: 99999999, instagramUsername: "unplugged_verses")
+                        print("tempuser")
+                        completion(tempUser)
+                    }
+                    
+                    if let user1 = u1 {
+                        print("user1 \(user1.ageHigh)")
+                        completion(user1)
+                    }
+                }
             case .failure(let error):
                 print("Error: \(error.localizedDescription)")
             }

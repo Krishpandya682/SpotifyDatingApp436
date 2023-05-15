@@ -7,67 +7,129 @@
 
 import Foundation
 
-//Return an array of count closest users spotifyUserId
-func getClosestUsers(spotifyUserId:String, count: Int = 5) -> [String] {
-    var closestUserIds: [String] = []
-    var matchVal: Double = 0
-    var disliked: [String] = []
+class RecommendationSystem: ObservableObject {
+    @Published var finalClosestUsers: [User] = []
+    @Published var noClosestUsers: Bool = false
+    @Published var finalMatches: [User] = []
+    @Published var noMatches: Bool = false
     
-    getUser(spotifyUserId) { (user, error) in
-        if let error = error {
-            print("Error retrieving user: \(error.localizedDescription)")
-            return
-        }
+    //Return an array of count closest users spotifyUserId
+    func getClosestUsers(spotifyUserId:String, count: Int = 5) {
+        var closestUsers: [User] = []
+        var matchVal: Double = 0
+        var disliked: [String] = []
         
-        if let user = user {
-            // Use the retrieved user object
-            matchVal = user.matchVal
-            disliked = user.disliked
+        getUser(spotifyUserId) { (user, error) in
+            if let error = error {
+                print("Error retrieving user: \(error.localizedDescription)")
+                self.noClosestUsers = true
+            }
             
-            getUsers { (users, error) in
-                if let error = error {
-                    print("Error retrieving users: \(error.localizedDescription)")
-                    return
-                }
+            if let user = user {
+                // Use the retrieved user object
+                matchVal = user.matchVal
+                disliked = user.disliked
                 
-                if var users = users {
-                    // remove the user from users
-                    if let index = users.firstIndex(where: { $0.spotifyId == spotifyUserId }) {
-                        users.remove(at: index)
+                getUsers { (users, error) in
+                    if let error = error {
+                        print("Error retrieving users: \(error.localizedDescription)")
+                        self.noClosestUsers = true
                     }
                     
-                    // remove users that dont fall in the ageLow and ageHigh limits of the user and gender preferences of the users don't work together
-                    users = users.filter { user1 in
-                        let isOkayUser1 = (user.genderPref == 2 || user.genderPref == user1.gender)
-                        let isOkayUser = (user1.genderPref == 2 || user1.genderPref == user.gender)
+                    if var users = users {
+                        print("got userrs")
+                        // remove the user from users
+                        if let index = users.firstIndex(where: { $0.spotifyId == spotifyUserId }) {
+                            users.remove(at: index)
+                        }
                         
-                        return user1.age >= user.ageLow && user1.age <= user.ageHigh && isOkayUser1 && isOkayUser
-                    }
-                    
-                    // Sort the users by distance to the specified user
-                    let sortedUsers = users.sorted { (user1, user2) -> Bool in
-                        // Calculate the distance between user1 and spotifyUserId
-                        let distance1 = matchVal - user1.matchVal
-                        // Calculate the distance between user2 and spotifyUserId
-                        let distance2 = matchVal - user2.matchVal
+                        print("before filtering \(users.count)")
+                        // remove users that dont fall in the ageLow and ageHigh limits of the user and gender preferences of the users don't work together
+                        users = users.filter { user1 in
+                            let isOkayUser1 = (user.genderPref == 2 || user.genderPref == user1.gender)
+                            let isOkayUser = (user1.genderPref == 2 || user1.genderPref == user.gender)
+                            
+                            return !user.liked.contains(user1.spotifyId) && user1.age >= user.ageLow && user1.age <= user.ageHigh && isOkayUser1 && isOkayUser
+                        }
                         
-                        return distance1 < distance2
-                    }
-                    
-                    // Get the closest 'count' number of users
-                    for user in sortedUsers {
+                        print("filtered \(users.count)")
+                        // Sort the users by distance to the specified user
+                        let sortedUsers = users.sorted { (user1, user2) -> Bool in
+                            // Calculate the distance between user1 and spotifyUserId
+                            let distance1 = matchVal - user1.matchVal
+                            // Calculate the distance between user2 and spotifyUserId
+                            let distance2 = matchVal - user2.matchVal
+                            
+                            return distance1 < distance2
+                        }
+                        
+                        // Get the closest 'count' number of users
+                        for user in sortedUsers {
                             if !disliked.contains(user.spotifyId) {
-                                closestUserIds.append(user.spotifyId)
+                                closestUsers.append(user)
                                 
-                                if closestUserIds.count == count {
+                                if closestUsers.count == count {
                                     break
                                 }
                             }
                         }
+                        print("herereee")
+                        
+                        if closestUsers.isEmpty {
+                            self.noClosestUsers = true
+                        } else {
+                            self.finalClosestUsers = closestUsers
+                        }
+                    }
                 }
             }
         }
     }
     
-    return closestUserIds
+    func getMatches(spotifyId: String) {
+        print("inside getMatches")
+        var matchedUsers: [User] = []
+        
+        getUser(spotifyId) { (user, error) in
+            if let err = error {
+                print("inside getMatches, failed to fetch user: \(err.localizedDescription)")
+//                completion([])
+            }
+            
+            if let u = user {
+                print("matches count: \(u.matches.count)")
+                
+                for i in 0..<u.matches.count {
+                    var currSpotifyId = u.matches[i]
+                    
+                    getUser(currSpotifyId) { (user, error) in
+                        if let err = error {
+                            print("inside getMatches, failed to fetch user: \(err.localizedDescription)")
+//                            completion([])
+                        }
+                        
+                        if let u1 = user {
+                            print("matched user is appended")
+                            matchedUsers.append(u1)
+                            print("matched users count: \(matchedUsers.count)")
+                            
+                            if i == u.matches.count - 1 && matchedUsers.count == 0 {
+                                print("noMastches set true")
+                                self.noMatches = true
+                            } else if i == u.matches.count - 1 {
+                                self.finalMatches = matchedUsers
+                            }
+                        }
+                    }
+                }
+//                if matchedUsers.count == 0 {
+//                    print("noMastches set true")
+//                    self.noMatches = true
+//                } else {
+//                    self.finalMatches = matchedUsers
+//                }
+            }
+        }
+    }
+
 }

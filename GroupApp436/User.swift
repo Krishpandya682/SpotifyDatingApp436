@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseCore
 import FirebaseDatabase
 
-struct Features: Codable{
+struct Features: Codable, Hashable {
         let acousticness: Double
         let danceability: Double
         let duration_ms: Double
@@ -22,19 +22,36 @@ struct Features: Codable{
         let speechiness: Double
         let tempo: Double
         let time_signature: Double
+    
+//    func toDictionary() -> [String: Any] {
+//        return [
+//            "acousticness": acousticness,
+//            "danceability": danceability,
+//            "duration_ms": duration_ms,
+//            "energy": energy,
+//            "instrumentalness": instrumentalness,
+//            "key": key,
+//            "liveness": liveness,
+//            "loudness": loudness,
+//            "mode": mode,
+//            "speechiness": speechiness,
+//            "tempo": tempo,
+//            "time_signature": time_signature
+//        ]
+//    }
 }
 
-struct User: Identifiable, Codable {
+struct User: Identifiable, Codable, Hashable {
     let id = UUID()
     let spotifyId : String
     let name: String
-    let imageName: String
+    let imageURL: String
     let age: Int
     let description: String
     let gender: Int //0 for male, 1 for female, 2 for other
-    let genderPref: Int //0 for male, 1 for female, 2 for all
-    let ageLow: Int
-    let ageHigh: Int
+    var genderPref: Int //0 for male, 1 for female, 2 for all
+    var ageLow: Int
+    var ageHigh: Int
     let city: String
     let state: String
     let features: Features
@@ -42,11 +59,12 @@ struct User: Identifiable, Codable {
     let liked: [String]
     let matches: [String]
     var disliked: [String]
+    var phoneNumber: Int
+    var instagramUsername: String
     
-    init(spotifyId: String, name: String, imageName: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, city: String, state: String) {
+    init(spotifyId: String, name: String, imageURL: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, city: String, state: String, phoneNumber: Int, instagramUsername: String) {
         self.spotifyId = spotifyId
         self.name = name
-        self.imageName = imageName
         self.age = age
         self.description = description
         self.gender = gender
@@ -57,35 +75,39 @@ struct User: Identifiable, Codable {
         self.state = state
         self.features = calculateFeatures(spotifyUserId: spotifyId)
         self.matchVal = calculateMatchVal(features: self.features)
+        self.imageURL = imageURL
+        self.phoneNumber = phoneNumber
+        self.instagramUsername = instagramUsername
         self.liked = []
         self.matches = []
         self.disliked = []
     }
     
-    func toDictionary() -> [String: Any] {
-        return[
-            "spotifyId": self.spotifyId,
-            "name": self.name,
-            "imageName": self.imageName,
-            "age": self.age,
-            "description": self.description,
-            "gender": self.gender,
-            "genderPref": self.genderPref,
-            "ageLow": self.ageLow,
-            "ageHigh": self.ageHigh,
-            "city": self.city,
-            "state": self.state,
-            "features": self.features,
-            "matchVal": self.matchVal,
-            "liked": self.liked,
-            "matches": self.matches,
-            "disliked": self.disliked
-        ]
-    }
+//    func toDictionary() -> [String: Any] {
+//        return[
+//            "spotifyId": self.spotifyId,
+//            "name": self.name,
+//            "age": self.age,
+//            "description": self.description,
+//            "gender": self.gender,
+//            "genderPref": self.genderPref,
+//            "ageLow": self.ageLow,
+//            "ageHigh": self.ageHigh,
+//            "city": self.city,
+//            "state": self.state,
+//            "features": self.features.toDictionary(),
+//            "matchVal": self.matchVal,
+//            "liked": self.liked,
+//            "matches": self.matches,
+//            "disliked": self.disliked,
+//            "instagramUserName": self.instagramUsername,
+//            "phoneNumber": self.phoneNumber
+//        ]
+//    }
 }
 
 
-func setUsers(_ val: User, completion: @escaping (Bool) -> Void) {
+func setUser(_ val: User, completion: @escaping (Bool) -> Void) {
     FirestoreManager().createUser(userCard: val) { success in
         completion(success)
     }
@@ -150,6 +172,7 @@ func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
                     var newLiked = user1.liked
                     
                     newLiked.append(likedSpotifyUserId)
+                    print("added to liked ")
                             
                     FirestoreManager().updateUser(spotifyId: spotifyUserId, data: ["liked": newLiked]) { (error3) in
                         if let error = error3 {
@@ -209,9 +232,97 @@ func addDisliked(spotifyUserId: String, dislikedSpotifyUserId: String) {
                     print("Error updating current user: \(error.localizedDescription)")
                     return;
                 } else {
-                    print("Disliked user added successfully")
+                    print("Disliked user added successfully. \(user1.disliked)")
                 }
             }
+        }
+    }
+}
+
+func setAgeHigh(spotifyId: String, ageHigh: Int) {
+    let data: [String: Any] = ["ageHigh": ageHigh]
+    
+    FirestoreManager().updateUser(spotifyId: spotifyId, data: data) { (error) in
+        if let error = error {
+            print("Error updating current user: \(error.localizedDescription)")
+            return;
+        } else {
+            print("modified ageHigh to \(ageHigh)")
+        }
+    }
+}
+
+func getAgeHigh(spotifyId: String, completion: @escaping (Int) -> Void) {
+    FirestoreManager().getUser(spotifyId: spotifyId) { (user, error) in
+        if let error = error {
+            print("Error getting current user: \(error.localizedDescription)")
+            return;
+        }
+        if let u = user {
+            completion(u.ageHigh)
+        }
+    }
+}
+
+func setAgeLow(spotifyId: String, ageLow: Int) {
+    let data: [String: Any] = ["ageLow": ageLow]
+    
+    FirestoreManager().updateUser(spotifyId: spotifyId, data: data) { (error) in
+        if let error = error {
+            print("Error updating current user: \(error.localizedDescription)")
+            return;
+        } else {
+            print("modified ageLow to \(ageLow)")
+        }
+    }
+}
+
+func getAgeLow(spotifyId: String, completion: @escaping (Int) -> Void) {
+    
+    FirestoreManager().getUser(spotifyId: spotifyId) { (user, error) in
+        if let error = error {
+            print("Error getting current user: \(error.localizedDescription)")
+            return;
+        }
+        if let u = user {
+            completion(u.ageLow)
+        }
+    }
+}
+
+func setGenderPref(spotifyId: String, pref: Int) {
+    let data: [String: Any] = ["genderPref": pref]
+    
+    FirestoreManager().updateUser(spotifyId: spotifyId, data: data) { (error) in
+        if let error = error {
+            print("Error updating current user: \(error.localizedDescription)")
+            return;
+        } else {
+            print("Disliked user added successfully")
+        }
+    }
+}
+
+func getGenderPref(spotifyId: String, completion: @escaping (Int) -> Void) {
+    FirestoreManager().getUser(spotifyId: spotifyId) { (user, error) in
+        if let error = error {
+            print("Error getting current user: \(error.localizedDescription)")
+            return;
+        }
+        if let u = user {
+            completion(u.genderPref)
+        }
+    }
+}
+
+func getLiked(spotifyId: String, completion: @escaping ([String]) -> Void) {
+    getUser(spotifyId) { (user, error) in
+        if let err = error {
+            completion([])
+        }
+        
+        if let u = user {
+            completion(u.liked)
         }
     }
 }

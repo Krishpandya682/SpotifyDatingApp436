@@ -28,6 +28,11 @@
 		074A930529F88729009F5520 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 074A930429F88729009F5520 /* FirebaseStorage */; };
 		074A930829F888BB009F5520 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074A930729F888BB009F5520 /* GoogleService-Info.plist */; };
 		07924D4D2A0D030000FAE277 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07924D4C2A0D030000FAE277 /* SignUpView.swift */; };
+		98319D002A101BA20001782D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319CFF2A101BA20001782D /* CardView.swift */; };
+		98319D022A101C8D0001782D /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D012A101C8D0001782D /* MatchView.swift */; };
+		98319D042A101CE40001782D /* UserPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D032A101CE40001782D /* UserPreferencesView.swift */; };
+		98319D062A114E4D0001782D /* SignedInPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D052A114E4D0001782D /* SignedInPages.swift */; };
+		985225E82A0DE183007A068D /* UserInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985225E72A0DE183007A068D /* UserInputView.swift */; };
 		98DA491429FDC70100295CD5 /* RecommendationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DA491329FDC70100295CD5 /* RecommendationSystem.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +56,11 @@
 		074A930629F8882C009F5520 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		074A930729F888BB009F5520 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		07924D4C2A0D030000FAE277 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		98319CFF2A101BA20001782D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		98319D012A101C8D0001782D /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
+		98319D032A101CE40001782D /* UserPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferencesView.swift; sourceTree = "<group>"; };
+		98319D052A114E4D0001782D /* SignedInPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedInPages.swift; sourceTree = "<group>"; };
+		985225E72A0DE183007A068D /* UserInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputView.swift; sourceTree = "<group>"; };
 		98DA491329FDC70100295CD5 /* RecommendationSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationSystem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,12 +107,17 @@
 				074A92F529F886CE009F5520 /* SpotifyiOS.framework */,
 				074A92F629F886CE009F5520 /* SpotifyiOS.xcframework */,
 				074A92D329F88556009F5520 /* GroupApp436App.swift */,
+				98319D052A114E4D0001782D /* SignedInPages.swift */,
+				98319D012A101C8D0001782D /* MatchView.swift */,
+				98319D032A101CE40001782D /* UserPreferencesView.swift */,
+				98319CFF2A101BA20001782D /* CardView.swift */,
 				074A92D529F88556009F5520 /* ContentView.swift */,
 				074A92D729F88557009F5520 /* Assets.xcassets */,
 				074A92D929F88557009F5520 /* GroupApp436.entitlements */,
 				074A92DA29F88557009F5520 /* Preview Content */,
 				074A92E229F885B3009F5520 /* SpotifyConstants.swift */,
 				074A92E429F885CE009F5520 /* User.swift */,
+				985225E72A0DE183007A068D /* UserInputView.swift */,
 				074A92E629F885F8009F5520 /* FirestoreManager.swift */,
 				074A92E829F88625009F5520 /* GroupApp436-Bridging-Header.h */,
 				074A92EB29F88643009F5520 /* Constants.swift */,
@@ -210,13 +225,18 @@
 				074A92E729F885F8009F5520 /* FirestoreManager.swift in Sources */,
 				074A92D629F88556009F5520 /* ContentView.swift in Sources */,
 				074A92D429F88556009F5520 /* GroupApp436App.swift in Sources */,
+				98319D022A101C8D0001782D /* MatchView.swift in Sources */,
+				985225E82A0DE183007A068D /* UserInputView.swift in Sources */,
 				98DA491429FDC70100295CD5 /* RecommendationSystem.swift in Sources */,
+				98319D042A101CE40001782D /* UserPreferencesView.swift in Sources */,
 				07924D4D2A0D030000FAE277 /* SignUpView.swift in Sources */,
+				98319D002A101BA20001782D /* CardView.swift in Sources */,
 				074A92E329F885B3009F5520 /* SpotifyConstants.swift in Sources */,
 				074A92F029F8866E009F5520 /* LoginView.swift in Sources */,
 				074A92F229F88685009F5520 /* UserView.swift in Sources */,
 				074A92F429F88694009F5520 /* CreateUser.swift in Sources */,
 				074A92EC29F88643009F5520 /* Constants.swift in Sources */,
+				98319D062A114E4D0001782D /* SignedInPages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,13 +10,19 @@ struct LoginView: View {
     let showDialog = "true"
 
     var body: some View {
-        
         let authURLFull = "https://accounts.spotify.com/authorize?response_type=\(responseType)&client_id=\(CLIENT_ID)&scope=\(SCOPE)&redirect_uri=\(REDIRECT_URI)&show_dialog=\(showDialog)"
         
         
-        Link("Login With Spotify", destination: URL(string: authURLFull)!)
-        .padding()
+        Text("Spotify Dating App")
+            .font(.system(size: 40, weight: .semibold))
+            .foregroundColor(.black)
+        
+            Link("Login With Spotify", destination: URL(string: authURLFull)!)
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(10)
         
     }
-     
 }
+
