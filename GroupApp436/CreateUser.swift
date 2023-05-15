@@ -74,7 +74,7 @@ func getUserInfo(with accessToken: String, completion: @escaping (Result<[String
 }
 
 
-func createUserProfile(url : URL, completion: @escaping (User) -> Void){
+func createUserProfile(url : URL, completion: @escaping (User, Bool) -> Void){
     print("createUserProfile")
     let params = extractParameters(from: url)
     let token_type = params?["token_type"]
@@ -123,12 +123,12 @@ func createUserProfile(url : URL, completion: @escaping (User) -> Void){
                                             ageHigh: 25,
                                             zipcode: 20742, phoneNumber: 99999999, instagramUsername: "unplugged_verses")
                         print("tempuser")
-                        completion(tempUser)
+                        completion(tempUser, false)
                     }
                     
                     if let user1 = u1 {
                         print("user1 \(user1.ageHigh)")
-                        completion(user1)
+                        completion(user1, true)
                     }
                 }
             case .failure(let error):

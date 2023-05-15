@@ -88,12 +88,13 @@ struct GroupApp436App: App {
                     .onOpenURL { url in
                         print("Redirected to app with URL: \(url)")
                         self.isRedirected = true
-                        createUserProfile(url: url) { user in
+                        createUserProfile(url: url) { (user,isSignedUp) in
                             setUser(user) { success in
                                 print("ustrdtrfhg")
                                 userAlreadyExists = success
                                 currUser = user
                             }
+                            self.isUserSignedUp = isSignedUp
                         }
                     }
                     .padding(40)
