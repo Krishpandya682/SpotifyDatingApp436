@@ -52,8 +52,9 @@ struct User: Identifiable, Codable, Hashable {
     var genderPref: Int //0 for male, 1 for female, 2 for all
     var ageLow: Int
     var ageHigh: Int
-    let city: String
-    let state: String
+//    let city: String
+//    let state: String
+    let zipcode: Int
     let features: Features
     let matchVal: Double
     let liked: [String]
@@ -62,7 +63,7 @@ struct User: Identifiable, Codable, Hashable {
     var phoneNumber: Int
     var instagramUsername: String
     
-    init(spotifyId: String, name: String, imageURL: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, city: String, state: String, phoneNumber: Int, instagramUsername: String) {
+    init(spotifyId: String, name: String, imageURL: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, zipcode: Int, phoneNumber: Int, instagramUsername: String) {
         self.spotifyId = spotifyId
         self.name = name
         self.age = age
@@ -71,8 +72,9 @@ struct User: Identifiable, Codable, Hashable {
         self.genderPref = genderPref
         self.ageLow = ageLow
         self.ageHigh = ageHigh
-        self.city = city
-        self.state = state
+//        self.city = city
+//        self.state = state
+        self.zipcode = zipcode
         self.features = calculateFeatures(spotifyUserId: spotifyId)
         self.matchVal = calculateMatchVal(features: self.features)
         self.imageURL = imageURL

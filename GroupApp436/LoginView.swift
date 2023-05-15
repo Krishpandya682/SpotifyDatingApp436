@@ -13,15 +13,17 @@ struct LoginView: View {
         let authURLFull = "https://accounts.spotify.com/authorize?response_type=\(responseType)&client_id=\(CLIENT_ID)&scope=\(SCOPE)&redirect_uri=\(REDIRECT_URI)&show_dialog=\(showDialog)"
         
         
-        Text("Spotify Dating App")
-            .font(.system(size: 40, weight: .semibold))
-            .foregroundColor(.black)
-        
-            Link("Login With Spotify", destination: URL(string: authURLFull)!)
-                .padding()
-                .background(Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(10)
+        VStack{
+            Text("Spotify Dating App")
+                .font(.system(size: 30, weight: .semibold))
+                .foregroundColor(.black).frame(alignment: .center)
+            
+                Link("Login With Spotify", destination: URL(string: authURLFull)!)
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+        }.frame(alignment: .center)
         
     }
 }

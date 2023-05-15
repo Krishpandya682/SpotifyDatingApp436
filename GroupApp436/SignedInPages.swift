@@ -19,7 +19,7 @@ struct SignedInPages: View {
     var body: some View {
         if let user = currUser {
             TabView(selection: $selectedTab) {
-                UserPreferencesView(userOpt: $currUser, selectedTab: self.$selectedTab)
+                UserPreferencesView(userOpt: $currUser, selectedTab: $selectedTab)
                     .tabItem {
                         Image(systemName: "gear")
                         Text("Preferences")
@@ -29,14 +29,14 @@ struct SignedInPages: View {
                 VStack {
                     if closestUsers.isEmpty {
                         if noClosestUsers {
-                            Text("No closest Users :(, We will be on the look out for more matches. Try again tomorrow!")
+                            Text("No Swipes available").font(.headline)
                         } else {
                             // show a loading indicator while fetching closest users
                             ProgressView()
                         }
                     } else {
                         ZStack {
-                            Text("You have run out of swipes")
+                            Text("You have run out of swipes").font(.headline)
                             ForEach(closestUsers.reversed(), id: \.self) { u in
                                 CardView(signedUserSpotifyId: user.spotifyId, user: u)
                             }
@@ -47,13 +47,14 @@ struct SignedInPages: View {
                 .onChange(of: selectedTab) { newValue in
                     // fetch closest users when the Swipe tab is selected
                     if newValue == 1 {
+                        print("nnnnnnnn")
                         recommendationSystem.getClosestUsers(spotifyUserId: user.spotifyId)
                     }
                 }
-//                .onAppear {
-//                    // fetch closest users when the view appears
-//                    recommendationSystem.getClosestUsers(spotifyUserId: user.spotifyId)
-//                }
+                .onAppear {
+                    // fetch closest users when the view appears
+                    recommendationSystem.getClosestUsers(spotifyUserId: user.spotifyId)
+                }
                 .onChange(of: recommendationSystem.finalClosestUsers) { newValue in
                     self.closestUsers = newValue
                 }
@@ -71,7 +72,7 @@ struct SignedInPages: View {
                 VStack {
                     if matchedUsers.isEmpty {
                         if noMatches {
-                            Text("No matches yet. Keep looking. Try again tomorrow!")
+                            Text("No matches yet! Check again tomorrow").font(.headline)
                         } else {
                             // show a loading indicator while fetching closest users
                             ProgressView()

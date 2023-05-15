@@ -6,131 +6,8 @@
 //
 import SwiftUI
 
-//struct SignUpView: View {
-//    @Binding var currUser: User?
-//    @EnvironmentObject var firestoreManager: FirestoreManager
-//    @EnvironmentObject var recommendationSystem: RecommendationSystem
-//    var spotifyId: String
-//    @State var shouldNavigateToSignedInPages = false
-//    @State var name: String = ""
-//    @State var age: Int = 0
-//    @State var description: String = ""
-//
-//    let maxBioWords = 30
-//
-//    var body: some View {
-//        VStack{
-//            VStack(alignment: .leading, spacing: 20) {
-//                HStack {
-//                    Text("Name:")
-//                        .frame(width: 80, alignment: .leading)
-//                        .font(.headline)
-//                    TextField("Enter your name", text: $name)
-//                        .padding(.vertical, 12)
-//                        .padding(.horizontal, 16)
-//                        .font(.title3)
-//                        .background(Color(.systemGray6))
-//                        .foregroundColor(.black)
-//                        .cornerRadius(8)
-//                }
-//
-//                HStack {
-//                    Text("Age:")
-//                        .frame(width: 80, alignment: .leading)
-//                        .font(.headline)
-//                    TextField("Enter your age", value: $age, formatter: NumberFormatter())
-//                        .padding(.vertical, 12)
-//                        .padding(.horizontal, 16)
-//                        .font(.title3)
-//                        .background(Color(.systemGray6))
-//                        .foregroundColor(.black)
-//                        .cornerRadius(8)
-//                        .keyboardType(.numberPad)
-//                }
-//
-//                VStack(alignment: .leading) {
-//                    Text("Bio:")
-//                        .font(.headline)
-//                    ZStack(alignment: .topLeading) {
-//                        TextEditor(text: $description)
-//                            .frame( height: 150)
-//                            .padding(.vertical, 12)
-//                            .padding(.horizontal, 16)
-//                            //.background(Color(.systemGray6))
-//                            .foregroundColor(.black)
-//                            .cornerRadius(8).overlay(
-//                                RoundedRectangle(cornerRadius: 16)
-//                                    .stroke(Color(.systemGray6), lineWidth: 4)
-//                                    .onChange(of: description) { newValue in
-//                                        if newValue.split(separator: " ").count > maxBioWords {
-//                                            let words = newValue.split(separator: " ")
-//                                            description = words.prefix(maxBioWords).joined(separator: " ")
-//                                        }
-//                                    }
-//                            )
-//                        if description.isEmpty {
-//                            Text("Enter your bio")
-//                                .foregroundColor(Color(.placeholderText))
-//                                .padding(.horizontal, 20)
-//                                .padding(.top, 14)
-//                        }
-//                    }
-//                }
-//
-//                Spacer()
-//
-//                Button(action: {
-//                    firestoreManager.updateUser(spotifyId: spotifyId, data: ["name": name, "description": description, "age": age]) { (error1) in
-//                        if let error = error1 {
-//                            // Handle the error
-//                            print("Error updating user: \(error.localizedDescription)")
-//                            return
-//                        } else {
-//                            shouldNavigateToSignedInPages = true
-//                        }
-//                    }
-//
-//                }) {
-//                    Text("Submit")
-//                        .fontWeight(.semibold)
-//                        .foregroundColor(.white)
-//                        .padding(.vertical, 10)
-//                        .padding(.horizontal, 20)
-//                        .background(Color.blue)
-//                        .cornerRadius(8)
-//                }
-//
-//            }
-//            .padding(.vertical, 10).frame(width: 350, height: 600)
-//            .navigationBarTitle("Profile", displayMode: .inline)
-////            .background(NavigationLink(
-////                        destination: SignedInPages(currUser: $currUser),
-////                        isActive: $shouldNavigateToSignedInPages,
-////                        label: EmptyView.init
-////                    ))
-//            .sheet(isPresented: $shouldNavigateToSignedInPages) {
-//                SignedInPages(currUser: $currUser).environmentObject(recommendationSystem)
-//            }
-//        }
-//
-//    }
-//}
-
-
-
-
-
-
-//
-//  SignUpView.swift
-//  GroupApp436
-//
-//  Created by Krish Pandya on 5/11/23.
-//
-import SwiftUI
-
 struct SignUpView: View {
-//    @Binding var user: User?
+    @Binding var isUserSignedUp: Bool
     @EnvironmentObject var firestoreManager: FirestoreManager
     @EnvironmentObject var recommendationSystem: RecommendationSystem
     @State var shouldNavigateToSignedInPages = false
@@ -140,9 +17,9 @@ struct SignUpView: View {
     @State var description: String = ""
     @State var ageLow: Int = 18
     @State var ageHigh: Int = 100
-    @State var phoneNumber: String = ""
+    @State var phoneNumber: Int = 0
     @State var instagram: String = ""
-    @State var zip:Int = 00000
+    @State var zip:Int = 20742
     let maxBioWords = 30
     @State private var showAlert = false
 
@@ -151,7 +28,12 @@ struct SignUpView: View {
             VStack{
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
-                        Text("Name:")
+                            HStack(spacing: 0) {
+                                Text("*").foregroundColor(.red)
+                                    .baselineOffset(5)
+                                Text("Name:")
+                            }
+                            .baselineOffset(5)
                             .frame(width: 80, alignment: .leading)
                             .font(.headline)
                         TextField("Enter your name", text: $name)
@@ -164,7 +46,10 @@ struct SignUpView: View {
                     }
 
                     HStack {
-                        Text("Age:")
+                            HStack(spacing: 0) {
+                                Text("*").foregroundColor(.red)
+                                Text("Age:")
+                            }
                             .frame(width: 80, alignment: .leading)
                             .font(.headline)
                         TextField("Enter your age", value: $age, formatter: NumberFormatter())
@@ -232,10 +117,13 @@ struct SignUpView: View {
                     }
                     
                     VStack {
-                        Text("Phone Number:")
+                            HStack(spacing: 0) {
+                                Text("*").foregroundColor(.red)
+                                Text("Phone Number:")
+                            }
                             .frame(width: 125, alignment: .leading)
                             .font(.headline)
-                        TextField("Phone no:", text: $phoneNumber)
+                        TextField("Phone no:", value: $phoneNumber, formatter: NumberFormatter())
                             .padding(.vertical, 12)
                             .padding(.horizontal, 16)
                             .font(.title3)
@@ -259,7 +147,11 @@ struct SignUpView: View {
                     }
                     
                     VStack {
-                        Text("ZipCode:")
+                            HStack(spacing: 0) {
+                                Text("*").foregroundColor(.red)
+                                Text("ZipCode:")
+                                
+                            }
                             .frame(width: 100, alignment: .leading)
                             .font(.headline)
                         TextField("ZipCode:", value: $zip, formatter: NumberFormatter())
@@ -270,22 +162,19 @@ struct SignUpView: View {
                             .foregroundColor(.black)
                             .cornerRadius(8)
                     }
-
-
-
-                    Spacer()
                     
                     Button(action: {
-                        if name.count == 0 || phoneNumber.count == 0 || ageLow > ageHigh || ageLow < 18 || age < 18 || String(zip).count != 6{
+                        if name.count == 0 || (String(phoneNumber).count == 0 && String(phoneNumber).count == 10) || ageLow > ageHigh || ageLow < 18 || age < 18 || String(zip).count != 5 {
                             showAlert = true
                         }else{
-                            firestoreManager.updateUser(spotifyId: spotifyId, data: ["name": name, "description": description, "age": age, "ZipCode" : zip]) { (error1) in
+                            firestoreManager.updateUser(spotifyId: spotifyId, data: ["name": name, "age": age, "ageLow": ageLow, "ageHigh": ageHigh, "description": description, "ZipCode" : zip, "phoneNumber": phoneNumber, "instagramUsername": instagram]) { (error1) in
                                 if let error = error1 {
                                     // Handle the error
                                     print("Error updating user: \(error.localizedDescription)")
                                     return
                                 }
                             }
+                            isUserSignedUp = true
                         }
                     }) {
                         Text("Save")
@@ -298,10 +187,10 @@ struct SignUpView: View {
                     }
 
                 }
-                .padding(.vertical, 10).frame(width: 350, height: 600)
+                .padding(.vertical, 10).frame(width: 350, height: 700)
                 .navigationBarTitle("Profile", displayMode: .inline).fixedSize(horizontal: false, vertical: true)
             }.padding(.vertical, 80)
-        }.ignoresSafeArea().frame(height: 670).alert(isPresented: $showAlert) {
+        }.ignoresSafeArea().frame(height: 700).alert(isPresented: $showAlert) {
             Alert(
                 title: Text("Enter Valid/Required Values"),
                 message: Text("Enter valid values to continue"),

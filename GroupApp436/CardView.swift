@@ -23,7 +23,6 @@ struct CardView: View {
                 .shadow(radius: 10)
             
             VStack(spacing: 10) {
-                Text("user.imageURL \(user.imageURL)")
                 AsyncImage(url: URL(string: user.imageURL)) { phase in
                     switch phase {
                     case .empty:
@@ -35,15 +34,6 @@ struct CardView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                     case .failure:
                         Text("\(user.name) doesn't have a profile image").foregroundColor(.white).font(.headline)
-//                        Image(systemName: "xmark.octagon.fill")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .clipShape(RoundedRectangle(cornerRadius: 20))
-//                            .foregroundColor(.red)Image(systemName: "xmark.octagon.fill")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .clipShape(RoundedRectangle(cornerRadius: 20))
-//                            .foregroundColor(.red)
                     @unknown default:
                         EmptyView()
                     }
@@ -56,9 +46,14 @@ struct CardView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
-                    Text("\(user.age) years old")
-                        .foregroundColor(.white)
+                    HStack{
+                        Text("\(user.age) years old")
+                            .foregroundColor(.white)
                         
+                        Spacer()
+                        
+                        LikesYou(signedUserSpotifyId: signedUserSpotifyId, spotifyId: user.spotifyId)
+                    }
                     Text(user.description)
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true).padding(.top, 1)

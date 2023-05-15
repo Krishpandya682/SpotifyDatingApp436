@@ -73,7 +73,6 @@ class RecommendationSystem: ObservableObject {
                                 }
                             }
                         }
-                        print("herereee")
                         
                         if closestUsers.isEmpty {
                             self.noClosestUsers = true
@@ -100,7 +99,8 @@ class RecommendationSystem: ObservableObject {
                 print("matches count: \(u.matches.count)")
                 
                 for i in 0..<u.matches.count {
-                    var currSpotifyId = u.matches[i]
+                    let currSpotifyId = u.matches[i]
+                    print("currentSpotifyId: \(currSpotifyId)")
                     
                     getUser(currSpotifyId) { (user, error) in
                         if let err = error {
@@ -113,21 +113,20 @@ class RecommendationSystem: ObservableObject {
                             matchedUsers.append(u1)
                             print("matched users count: \(matchedUsers.count)")
                             
-                            if i == u.matches.count - 1 && matchedUsers.count == 0 {
+                            if matchedUsers.count == (u.matches.count) && matchedUsers.count == 0 {
                                 print("noMastches set true")
                                 self.noMatches = true
-                            } else if i == u.matches.count - 1 {
+                            } else if matchedUsers.count == (u.matches.count) {
                                 self.finalMatches = matchedUsers
+                                print("matchedUser.count: \(matchedUsers.count), u1.name: \(u1.name), u.matches.count: \(u.matches.count-1)")
+                                print("final matches updated with \(self.finalMatches.count) values and matchedUser.count = \(matchedUsers.count)")
                             }
                         }
                     }
                 }
-//                if matchedUsers.count == 0 {
-//                    print("noMastches set true")
-//                    self.noMatches = true
-//                } else {
-//                    self.finalMatches = matchedUsers
-//                }
+                if u.matches.count == 0 {
+                    self.noMatches = true
+                }
             }
         }
     }

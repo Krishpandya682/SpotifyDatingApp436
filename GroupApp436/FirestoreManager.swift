@@ -59,8 +59,6 @@ class FirestoreManager: ObservableObject {
                 guard let document = document, document.exists else {
                     throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])
                 }
-
-                print("document.data(): \(document.data()!)") // add this line
                 
                 let data = try JSONSerialization.data(withJSONObject: document.data()!, options: [])
                 print("here after data init")

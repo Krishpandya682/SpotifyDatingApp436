@@ -32,6 +32,8 @@
 		98319D022A101C8D0001782D /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D012A101C8D0001782D /* MatchView.swift */; };
 		98319D042A101CE40001782D /* UserPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D032A101CE40001782D /* UserPreferencesView.swift */; };
 		98319D062A114E4D0001782D /* SignedInPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D052A114E4D0001782D /* SignedInPages.swift */; };
+		98319D082A11EF040001782D /* LikesYou.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98319D072A11EF040001782D /* LikesYou.swift */; };
+		98319D0D2A129FF50001782D /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 98319D0C2A129FF50001782D /* PhoneNumberKit */; };
 		985225E82A0DE183007A068D /* UserInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985225E72A0DE183007A068D /* UserInputView.swift */; };
 		98DA491429FDC70100295CD5 /* RecommendationSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DA491329FDC70100295CD5 /* RecommendationSystem.swift */; };
 /* End PBXBuildFile section */
@@ -60,6 +62,7 @@
 		98319D012A101C8D0001782D /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		98319D032A101CE40001782D /* UserPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferencesView.swift; sourceTree = "<group>"; };
 		98319D052A114E4D0001782D /* SignedInPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedInPages.swift; sourceTree = "<group>"; };
+		98319D072A11EF040001782D /* LikesYou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesYou.swift; sourceTree = "<group>"; };
 		985225E72A0DE183007A068D /* UserInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInputView.swift; sourceTree = "<group>"; };
 		98DA491329FDC70100295CD5 /* RecommendationSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationSystem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,6 +78,7 @@
 				074A930329F88729009F5520 /* FirebaseFirestoreSwift in Frameworks */,
 				074A92FB29F88729009F5520 /* FirebaseAnalytics in Frameworks */,
 				074A930529F88729009F5520 /* FirebaseStorage in Frameworks */,
+				98319D0D2A129FF50001782D /* PhoneNumberKit in Frameworks */,
 				074A92FD29F88729009F5520 /* FirebaseAuth in Frameworks */,
 				074A930129F88729009F5520 /* FirebaseFirestore in Frameworks */,
 			);
@@ -111,6 +115,7 @@
 				98319D012A101C8D0001782D /* MatchView.swift */,
 				98319D032A101CE40001782D /* UserPreferencesView.swift */,
 				98319CFF2A101BA20001782D /* CardView.swift */,
+				98319D072A11EF040001782D /* LikesYou.swift */,
 				074A92D529F88556009F5520 /* ContentView.swift */,
 				074A92D729F88557009F5520 /* Assets.xcassets */,
 				074A92D929F88557009F5520 /* GroupApp436.entitlements */,
@@ -161,6 +166,7 @@
 				074A930029F88729009F5520 /* FirebaseFirestore */,
 				074A930229F88729009F5520 /* FirebaseFirestoreSwift */,
 				074A930429F88729009F5520 /* FirebaseStorage */,
+				98319D0C2A129FF50001782D /* PhoneNumberKit */,
 			);
 			productName = GroupApp436;
 			productReference = 074A92D029F88556009F5520 /* GroupApp436.app */;
@@ -193,6 +199,7 @@
 			mainGroup = 074A92C729F88556009F5520;
 			packageReferences = (
 				074A92F929F88729009F5520 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				98319D0B2A129FF50001782D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 			);
 			productRefGroup = 074A92D129F88556009F5520 /* Products */;
 			projectDirPath = "";
@@ -236,6 +243,7 @@
 				074A92F229F88685009F5520 /* UserView.swift in Sources */,
 				074A92F429F88694009F5520 /* CreateUser.swift in Sources */,
 				074A92EC29F88643009F5520 /* Constants.swift in Sources */,
+				98319D082A11EF040001782D /* LikesYou.swift in Sources */,
 				98319D062A114E4D0001782D /* SignedInPages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,6 +479,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		98319D0B2A129FF50001782D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -503,6 +519,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 074A92F929F88729009F5520 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		98319D0C2A129FF50001782D /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 98319D0B2A129FF50001782D /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

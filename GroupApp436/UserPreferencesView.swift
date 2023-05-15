@@ -92,6 +92,19 @@ struct UserPreferencesView: View {
                         Text(genderOptions[index])
                     }
                 }
+                .onAppear {
+                    getGenderPref(spotifyId: user.spotifyId) { pref in
+                        self.selectedGenderPref = pref
+                    }
+                }
+                .onChange(of: selectedTab) { newValue in
+                    // fetch closest users when the Swipe tab is selected
+                    if newValue == 0 {
+                        getGenderPref(spotifyId: user.spotifyId) { pref in
+                            self.selectedGenderPref = pref
+                        }
+                    }
+                }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal, 20)
                 

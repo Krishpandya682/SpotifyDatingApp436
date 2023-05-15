@@ -5,10 +5,6 @@
 //  Created by Krish Pandya on 4/25/23.
 //
 
-
-
-
-//Testing the neww changes in it!!!!!!!!!!!!!!!!!!!!!!!!!!
 import Foundation
 
 
@@ -125,8 +121,7 @@ func createUserProfile(url : URL, completion: @escaping (User) -> Void){
                                             genderPref: 1,
                                             ageLow: 18,
                                             ageHigh: 25,
-                                            city: "College Park",
-                                            state: "MD", phoneNumber: 99999999, instagramUsername: "unplugged_verses")
+                                            zipcode: 20742, phoneNumber: 99999999, instagramUsername: "unplugged_verses")
                         print("tempuser")
                         completion(tempUser)
                     }
