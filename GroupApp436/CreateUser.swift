@@ -121,7 +121,7 @@ func createUserProfile(url : URL, completion: @escaping (User, Bool) -> Void){
                                             genderPref: 1,
                                             ageLow: 18,
                                             ageHigh: 25,
-                                            zipcode: 20742, phoneNumber: 99999999, instagramUsername: "unplugged_verses")
+                                            zipcode: 20742, phoneNumber: 99999999, features: calculateFeatures(accessToken: accessToken), instagramUsername: "unplugged_verses")
                         print("tempuser")
                         completion(tempUser, false)
                     }

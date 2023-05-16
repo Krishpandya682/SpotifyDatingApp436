@@ -63,7 +63,7 @@ struct User: Identifiable, Codable, Hashable {
     var phoneNumber: Int
     var instagramUsername: String
     
-    init(spotifyId: String, name: String, imageURL: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, zipcode: Int, phoneNumber: Int, instagramUsername: String) {
+    init(spotifyId: String, name: String, imageURL: String, age: Int, description: String, gender: Int, genderPref: Int, ageLow: Int, ageHigh: Int, zipcode: Int, phoneNumber: Int, features: Features, instagramUsername: String) {
         self.spotifyId = spotifyId
         self.name = name
         self.age = age
@@ -75,7 +75,7 @@ struct User: Identifiable, Codable, Hashable {
 //        self.city = city
 //        self.state = state
         self.zipcode = zipcode
-        self.features = calculateFeatures(spotifyUserId: spotifyId)
+        self.features = features
         self.matchVal = calculateMatchVal(features: self.features)
         self.imageURL = imageURL
         self.phoneNumber = phoneNumber
@@ -150,7 +150,7 @@ func getUsers(completion: @escaping ([User]?, Error?) -> Void) {
     }
 }
 
-func calculateFeatures(spotifyUserId: String) -> Features {
+func calculateFeatures(accessToken: String) -> Features {
     return Features(acousticness: 0, danceability: 0, duration_ms: 0, energy: 0, instrumentalness: 0, key: 0, liveness: 0, loudness: 0, mode: 0, speechiness: 0, tempo: 0, time_signature: 0)
 }
 
