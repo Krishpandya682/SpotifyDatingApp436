@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+let f = Features(acousticness: 0, danceability: 0, duration_ms: 0, energy: 0, instrumentalness: 0, key: 0, liveness: 0, loudness: 0, mode: 0, speechiness: 0, tempo: 0, time_signature: 0)
 func extractParameters(from url: URL) -> [String: String]? {
     guard let fragment = url.fragment else {
         print("No hash fragment found in URL: \(url.absoluteString)")
@@ -74,7 +74,7 @@ func getUserInfo(with accessToken: String, completion: @escaping (Result<[String
 }
 
 
-func createUserProfile(url : URL, completion: @escaping (User, Bool) -> Void){
+func createUserProfile(url : URL, completion: @escaping (User, Bool, String) -> Void){
     print("createUserProfile")
     let params = extractParameters(from: url)
     let token_type = params?["token_type"]
@@ -121,14 +121,14 @@ func createUserProfile(url : URL, completion: @escaping (User, Bool) -> Void){
                                             genderPref: 1,
                                             ageLow: 18,
                                             ageHigh: 25,
-                                            zipcode: 20742, phoneNumber: 99999999, features: calculateFeatures(accessToken: accessToken), instagramUsername: "unplugged_verses")
+                                            zipcode: 20742, phoneNumber: 99999999, features: f, instagramUsername: "unplugged_verses")
                         print("tempuser")
-                        completion(tempUser, false)
+                        completion(tempUser, false, accessToken)
                     }
                     
                     if let user1 = u1 {
                         print("user1 \(user1.ageHigh)")
-                        completion(user1, true)
+                        completion(user1, true, accessToken)
                     }
                 }
             case .failure(let error):

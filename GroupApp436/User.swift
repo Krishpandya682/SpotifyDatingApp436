@@ -85,27 +85,6 @@ struct User: Identifiable, Codable, Hashable {
         self.disliked = []
     }
     
-//    func toDictionary() -> [String: Any] {
-//        return[
-//            "spotifyId": self.spotifyId,
-//            "name": self.name,
-//            "age": self.age,
-//            "description": self.description,
-//            "gender": self.gender,
-//            "genderPref": self.genderPref,
-//            "ageLow": self.ageLow,
-//            "ageHigh": self.ageHigh,
-//            "city": self.city,
-//            "state": self.state,
-//            "features": self.features.toDictionary(),
-//            "matchVal": self.matchVal,
-//            "liked": self.liked,
-//            "matches": self.matches,
-//            "disliked": self.disliked,
-//            "instagramUserName": self.instagramUsername,
-//            "phoneNumber": self.phoneNumber
-//        ]
-//    }
 }
 
 
@@ -149,10 +128,87 @@ func getUsers(completion: @escaping ([User]?, Error?) -> Void) {
         completion(users, nil)
     }
 }
+func calculateFeatures(accessToken: String, spotifyId: String, trackIds: [String]) -> Features {
+    guard !trackIds.isEmpty else {
+        return Features(acousticness: 0,
+                        danceability: 0,
+                        duration_ms: 0,
+                        energy: 0,
+                        instrumentalness: 0,
+                        key: 0,
+                        liveness: 0,
+                        loudness: 0,
+                        mode: 0,
+                        speechiness: 0,
+                        tempo: 0,
+                        time_signature: 0)
+    }
 
-func calculateFeatures(accessToken: String) -> Features {
-    return Features(acousticness: 0, danceability: 0, duration_ms: 0, energy: 0, instrumentalness: 0, key: 0, liveness: 0, loudness: 0, mode: 0, speechiness: 0, tempo: 0, time_signature: 0)
+    var acousticness: Double = 0.0
+    var danceability: Double = 0.0
+    var duration_ms: Double = 0.0
+    var energy: Double = 0.0
+    var instrumentalness: Double = 0.0
+    var key: Double = 0.0
+    var liveness: Double = 0.0
+    var loudness: Double = 0.0
+    var mode: Double = 0.0
+    var speechiness: Double = 0.0
+    var tempo: Double = 0.0
+    var time_signature: Double = 0.0
+
+    let group = DispatchGroup()
+
+    for trackId in trackIds {
+        group.enter()
+
+        storeSongFeatures(songID: trackId, accessToken: accessToken) { features in
+            print("DEFINITIELLYYYY")
+            print(features)
+
+            if let features = features {
+                acousticness += features.acousticness
+                danceability += features.danceability
+                duration_ms += features.duration_ms
+                energy += features.energy
+                instrumentalness += features.instrumentalness
+                key += features.key
+                liveness += features.liveness
+                loudness += features.loudness
+                mode += features.mode
+                speechiness += features.speechiness
+                tempo += features.tempo
+                time_signature += features.time_signature
+            }
+
+            print("Acousticness: \(acousticness)")
+            print("Danceability: \(danceability)")
+            print("Duration_ms: \(duration_ms)")
+
+            group.leave()
+        }
+    }
+
+    group.wait()
+
+    let count = Double(trackIds.count)
+    let averageFeatures = Features(acousticness: acousticness / count,
+                                   danceability: danceability / count,
+                                   duration_ms: duration_ms / count,
+                                   energy: energy / count,
+                                   instrumentalness: instrumentalness / count,
+                                   key: key / count,
+                                   liveness: liveness / count,
+                                   loudness: loudness / count,
+                                   mode: mode / count,
+                                   speechiness: speechiness / count,
+                                   tempo: tempo / count,
+                                   time_signature: time_signature / count)
+
+    print("returning------------ \(averageFeatures)")
+    return averageFeatures
 }
+
 
 func addLiked(spotifyUserId: String, likedSpotifyUserId: String) {
     

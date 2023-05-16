@@ -64,6 +64,7 @@ struct GroupApp436App: App {
     @State private var currUser: User? = nil
     @State var userAlreadyExists = false
     @State var isUserSignedUp = false
+    @State var accessToken = ""
 
     init() {
         FirebaseApp.configure()
@@ -75,7 +76,7 @@ struct GroupApp436App: App {
                 if isUserSignedUp {
                     SignedInPages(currUser: $currUser).environmentObject(recommendationSystem)
                 } else {
-                    SignUpView(isUserSignedUp: self.$isUserSignedUp, spotifyId: user.spotifyId)
+                    SignUpView(isUserSignedUp: self.$isUserSignedUp, spotifyId: user.spotifyId, accessToken: self.accessToken)
                         .environmentObject(firestoreManager)
                         .environmentObject(recommendationSystem)
                         .onAppear() {
@@ -88,11 +89,12 @@ struct GroupApp436App: App {
                     .onOpenURL { url in
                         print("Redirected to app with URL: \(url)")
                         self.isRedirected = true
-                        createUserProfile(url: url) { (user,isSignedUp) in
+                        createUserProfile(url: url) { (user,isSignedUp, accessToken) in
                             setUser(user) { success in
                                 print("ustrdtrfhg")
                                 userAlreadyExists = success
                                 currUser = user
+                                self.accessToken = accessToken
                             }
                             self.isUserSignedUp = isSignedUp
                         }

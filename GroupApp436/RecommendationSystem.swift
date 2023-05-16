@@ -59,9 +59,16 @@ class RecommendationSystem: ObservableObject {
                             let distance1 = matchVal - user1.matchVal
                             // Calculate the distance between user2 and spotifyUserId
                             let distance2 = matchVal - user2.matchVal
-                            
+                            if distance1 == distance2{
+                                let zipdistance1 = abs(user1.zipcode - user.zipcode)
+                                // Calculate the distance between user2 and spotifyUserId
+                                let zipdistance2 = abs(user2.zipcode - user.zipcode)
+                                
+                                return zipdistance1 < zipdistance2
+                            }
                             return distance1 < distance2
                         }
+                        
                         
                         // Get the closest 'count' number of users
                         for user in sortedUsers {
