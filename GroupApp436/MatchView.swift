@@ -52,7 +52,7 @@ struct MatchView: View {
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true).padding(.top, 1)
                         .padding(.leading, 0)
-                    Text("InstaId: \(user.instagramUsername)")
+//                    Text("InstaId: \(user.instagramUsername)")
                     Text("Contact Info: \(formattedPhoneNumber(phoneNumber: user.phoneNumber))")
 
 
@@ -61,7 +61,7 @@ struct MatchView: View {
                         .padding(.leading, 0)
                 }.frame(width: 350).padding(.leading, 0)
                 
-            }.frame(width: 350, height: 600).padding(.leading, 0)
+            }.frame(width: 350, height: 700).padding(.leading, 0)
         }
     }
     

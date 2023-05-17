@@ -37,7 +37,7 @@ struct SignedInPages: View {
                     } else {
                         ZStack {
                             Text("You have run out of swipes").font(.headline)
-                            ForEach(closestUsers.reversed(), id: \.self) { u in
+                            ForEach(closestUsers, id: \.self) { u in
                                 CardView(signedUserSpotifyId: user.spotifyId, user: u)
                             }
                             

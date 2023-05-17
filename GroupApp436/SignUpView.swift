@@ -32,7 +32,7 @@ struct SignUpView: View {
     @State private var showAlert = false
     let accessToken : String
     
-    @State private var allTrackIds: [String] = ["0ecW7IqLKhzKTPeqLSNc0V","6ZYxNjuAU9Vy3VtF6W1dtE","2RgvvnMwtP0R2OkVZmFvnV"]
+    @State private var allTrackIds: [String] = ["29m79w9xPMH4YCD6r8JSmV","5ZsAhuQ24mWHiduaxJqnhW","0ecW7IqLKhzKTPeqLSNc0V","6ZYxNjuAU9Vy3VtF6W1dtE","aUeYy0hXu0KBuJ5To0hS0","2RgvvnMwtP0R2OkVZmFvnV","0j2T0R9dR9qdJYsB7ciXhf","05FOcj5Cygu51XbAmlJd2k"]
     @State private var selectedTrackIds = [String]()
     
     @State var tracks: [Track] = []
@@ -250,7 +250,7 @@ struct SignUpView: View {
                                 .foregroundColor(.black)
                                 .cornerRadius(8)
                         }
-                        Text("--------SELECT SONGS--------------\(self.tracks.count)")
+                       Text("SELECT YOUR FAVIOURITE SONGS")
                         SongView(tracks: $tracks, selectedTrackIds: self.$selectedTrackIds)
                             .onAppear {
                                 for trackId in allTrackIds {
@@ -314,9 +314,9 @@ struct SignUpView: View {
                         }
                         
                     }
-                    .padding(.vertical, 250).frame(width: 350, height: 700)
+                    .padding(.vertical, 300).frame(width: 350, height: 750)
                     .navigationBarTitle("Profile", displayMode: .inline).fixedSize(horizontal: false, vertical: true)
-                }.padding(.vertical, 250)
+                }.padding(.vertical, 300)
             }
             
             .navigationBarTitle("Profile", displayMode: .inline)
